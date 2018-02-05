@@ -2,8 +2,8 @@ import  java.util.*;
 import  java.io.*;
 
 public class Node {
-	public Node__ leftNode;
-    public Node__ rightNode;
+	public Node leftNode;
+    public Node rightNode;
     public int depth;
     public ArrayList<ArrayList<Integer>> dataSet;
     public int noOfPositives;
@@ -19,8 +19,8 @@ public class Node {
     public Node(){
     	dataSet = new ArrayList<ArrayList<Integer>>();
     	potentialSplits = new ArrayList<Integer>();
-    	nodeNumber = Node__.totalNodes;
-    	Node__.totalNodes++;
+    	nodeNumber = Node.totalNodes;
+    	Node.totalNodes++;
     	label = -1;
     }
     
@@ -39,7 +39,7 @@ public class Node {
     }
 
    //set the properties of the created node - data, name, depth, entropy and potential attributes that the given node can split on
-   public static Node__ constructNode(Node__ node, ArrayList<ArrayList<Integer>> data, ArrayList<Integer> potentialAttributes, int depth, String name) {
+   public static Node constructNode(Node node, ArrayList<ArrayList<Integer>> data, ArrayList<Integer> potentialAttributes, int depth, String name) {
     	node.dataSet = data;
     	node.name = name;
     	node.depth = depth;
@@ -101,7 +101,7 @@ public class Node {
     }
     
     //choosing the best attribute to split a node which is not pure. Choose the node with the highest information gain
-    public static int BestAttributeToSplit(Node__ node) {
+    public static int BestAttributeToSplit(Node node) {
     	int attributeNumber = 0;
     	double informationGain = -1 * Double.MAX_VALUE;
     	double tempInformationGain = 0.0;
@@ -138,7 +138,7 @@ public class Node {
      * Recursive step: get the best attribute to split for the node, recursively create the tree for left and right subtree after the data is split on the select attribute
      * extra case: if the available atteibutes to split the tree are over but the data is still not pure, then count the maximum no of nodes and give label of the majority class
      */
-    public static Node__ createDecisionTree(Node__ node, HashMap<Integer,String> attributeNames) {
+    public static Node createDecisionTree(Node node, HashMap<Integer,String> attributeNames) {
     	if(node.noOfPositives == 0 || node.noOfnegatives ==0) {
     		node.label = (node.noOfPositives > 0) ? 1 : 0;
         	return node;
@@ -146,7 +146,7 @@ public class Node {
     	else {
     		if(node.potentialSplits.size() > 0) {
     		int splitAttribute = BestAttributeToSplit(node);
-    		Node__ leftNode = new Node__();
+    		Node leftNode = new Node();
     		ArrayList<Integer> potentialAttr = new ArrayList<Integer>(node.potentialSplits);
     		potentialAttr.remove((Integer)splitAttribute);
     		ArrayList<ArrayList<ArrayList<Integer>>> dataSets = SplitData(node.dataSet, splitAttribute);
@@ -158,7 +158,7 @@ public class Node {
     			leftNode = constructNode(leftNode,null, potentialAttr, (node.depth+1), attributeNames.get(splitAttribute));
     			leftNode.label = 0;
     	    }
-    		Node__ rightNode = new Node__();
+    		Node rightNode = new Node();
     		if(dataSets.get(1).size() > 0) {
     		rightNode = constructNode(rightNode,dataSets.get(1), potentialAttr, (node.depth+1), attributeNames.get(splitAttribute));
     		rightNode = createDecisionTree(rightNode, attributeNames);
@@ -184,7 +184,7 @@ public class Node {
     }
     
     // function that will print the decision tree
-    public static void printDecisionTree(Node__ node) {
+    public static void printDecisionTree(Node node) {
     	if(node != null) {
     		  if(node.label != -1) {
     			System.out.print(" " + node.label);
@@ -218,7 +218,7 @@ public class Node {
     }
     
     //check the label for any given set of input and if the label of the given input matches with the tree nodes
-    public static boolean CheckLabel(Node__ node, ArrayList<Integer> entry, HashMap<String, Integer> attributeNumbers)
+    public static boolean CheckLabel(Node node, ArrayList<Integer> entry, HashMap<String, Integer> attributeNumbers)
     {
     	int rowSize = entry.size();
 		if(node.label != -1) {
@@ -238,7 +238,7 @@ public class Node {
     }
     
     //calculate accuracy of the given data with the designed tree
-    public static double GetDataAccuracy(Node__ node, ArrayList<ArrayList<Integer>> dataToCheck, HashMap<String, Integer> attributeNumbers)
+    public static double GetDataAccuracy(Node node, ArrayList<ArrayList<Integer>> dataToCheck, HashMap<String, Integer> attributeNumbers)
     {
     	int count = 0;
     	if(dataToCheck.size() <= 0)
@@ -296,7 +296,7 @@ public class Node {
     }
     
     //prune the node fromt the subtree
-    public static void PruneNode(Node__ node, int nodeNumberToPrune) {
+    public static void PruneNode(Node node, int nodeNumberToPrune) {
     	if(node != null) {
     		if(node.nodeNumber == nodeNumberToPrune) {
     			if(node.label == -1) {
@@ -312,7 +312,7 @@ public class Node {
     }
     
     //prune the tree with the node numbers that provided in the list
-    public static Node__ PruneDecisionTree(Node__ root, ArrayList<Integer> nodesToPrune, int totalNodes) {
+    public static Node PruneDecisionTree(Node root, ArrayList<Integer> nodesToPrune, int totalNodes) {
     	int nodeNumberToPrune = 0;
           while(nodesToPrune.size() > 0) {
     		nodeNumberToPrune = nodesToPrune.get(0);
@@ -340,7 +340,7 @@ public class Node {
     }
     
     //get the count of total nodes in a tree
-    public static int GetTotalNodes(Node__ node) {
+    public static int GetTotalNodes(Node node) {
     	if(node != null) {
     		return 1 + GetTotalNodes(node.leftNode) + GetTotalNodes(node.rightNode);
     	}
@@ -348,7 +348,7 @@ public class Node {
     }
     
   //get the count of leaf nodes in a tree
-    public static int GetTotalLeafNodes(Node__ node) {
+    public static int GetTotalLeafNodes(Node node) {
     	if(node != null) {
     		if(node.label != -1) {
     			return 1;
@@ -362,7 +362,7 @@ public class Node {
     }
     
   //get the count of total nodes and leaf nodes in a tree
-    public static ArrayList<Integer> GetNoOfNodesInTree(Node__ root){
+    public static ArrayList<Integer> GetNoOfNodesInTree(Node root){
     	 int totalNodes = 1 + GetTotalNodes(root.leftNode) + GetTotalNodes(root.rightNode);
     	 int totalLeafNodes =  GetTotalLeafNodes(root.leftNode) + GetTotalLeafNodes(root.rightNode);
     	 ArrayList<Integer> totalNodeList = new ArrayList<Integer>();
@@ -378,7 +378,7 @@ public class Node {
      * the tree is pruned and accuracies are found again
      */
 	public static void main(String[] args) throws IOException {		
-		Node__ root = new Node__();
+		Node root = new Node();
 		BufferedReader input = null;
 		ArrayList<ArrayList<Integer>> trainingData;
 		ArrayList<ArrayList<Integer>> validationData;
@@ -416,7 +416,7 @@ public class Node {
         
         root = constructNode(root, trainingData, potentialAttributes, 0, "root");
         root = createDecisionTree(root, attributeNames);
-        System.out.println("Decision Model Constructed " + "No of nodes = " + Node__.totalNodes);
+        System.out.println("Decision Model Constructed " + "No of nodes = " + Node.totalNodes);
         System.out.println("\n Decision Tree Before Pruning \n");
         printDecisionTree(root);
         ArrayList<Integer> totalNodesList = GetNoOfNodesInTree(root);
@@ -444,8 +444,8 @@ public class Node {
         System.out.println("Accuracy of the model on testing dataset = " + testAccuracy);
         
         
-        nodesToPrune = GetPruningNodes(Node__.totalNodes,pruningFactor);
-        root = PruneDecisionTree(root, nodesToPrune, Node__.totalNodes);
+        nodesToPrune = GetPruningNodes(Node.totalNodes,pruningFactor);
+        root = PruneDecisionTree(root, nodesToPrune, Node.totalNodes);
         
         System.out.println("\n Decision Tree After Pruning \n");
         printDecisionTree(root);
