@@ -1,4 +1,4 @@
-•	ID3 implementation is done in Java
+﻿•	ID3 implementation is done in Java
 •	Implemented by 
               Name: Krishna Mohan Reddy Katha
 •	Compilation:
@@ -10,6 +10,6 @@
          3.	Root node of the decision tree is not considered for pruning.
 •	Accomplished: 
                     Implemented ID3 for decision tree model and did post pruning for improving accuracy in case of over fitting.
-					Based on random number selected pruned nodes post pruned accuracies vary.
+		    Based on random number selected pruned nodes, post pruned accuracies vary.
 •	Learned:
-                Learnt how to construct decision tree training model and how pruning avoids over fitting and improves accuracy provided the nodes chosen to prune are good potential ones
+                Learnt how to construct decision tree training model and how pruning avoids over fitting and improves accuracy, provided the nodes chosen to prune are good potential ones.
